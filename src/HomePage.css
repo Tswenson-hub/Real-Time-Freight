@@ -1,0 +1,79 @@
+.truck-container {
+    width: 300px;
+    height: 150px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .truck {
+    position: absolute;
+    bottom: 20px;
+    left: -300px;
+    width: 300px;
+    height: 130px;
+    animation: drive 8s linear infinite;
+  }
+  
+  .truck-body {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    height: 110px;
+    background-color: #2c3e50;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .truck-cabin {
+    position: absolute;
+    bottom: 0;
+    right: 200px;
+    width: 100px;
+    height: 90px;
+    background-color: #2c3e50;
+    border-radius: 10px 0 0 0;
+  }
+  
+  .windshield {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 60px;
+    height: 40px;
+    background-color: #ecf0f1;
+    border-radius: 5px;
+  }
+  
+  .wheel {
+    position: absolute;
+    bottom: -10px;
+    width: 40px;
+    height: 40px;
+    background-color: #34495e;
+    border-radius: 50%;
+    border: 5px solid #95a5a6;
+  }
+  
+  .wheel-front {
+    left: 30px;
+  }
+  
+  .wheel-mid {
+    right: 100px;
+  }
+  
+  .wheel-back {
+    right: 30px;
+  }
+  
+  @keyframes drive {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(600px);
+    }
+  }
+  
+  /* Rest of the CSS remains the same */
