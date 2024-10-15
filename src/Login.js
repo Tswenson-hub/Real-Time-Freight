@@ -1,42 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { supabase } from "./supabaseClient";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      console.log("User logged in:", data);
-      // Redirect or update state here
-    } catch (error) {
-      console.error("Error logging in:", error.message);
-    }
-  };
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_IN") {
+          navigate("/");
+        } else if (event === "SIGNED_OUT") {
+          navigate("/login");
+        }
+      }
+    );
+
+    // Check the initial auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate("/");
+      }
+    });
+
+    // Cleanup function to remove the listener when the component unmounts
+    return () => {
+      if (authListener && authListener.subscription) {
+        authListener.subscription.unsubscribe();
+      }
+    };
+  }, [navigate]);
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Log In</button>
-    </form>
+    <div className="login-container">
+      <div className="login-box">
+        <h1>Welcome Back</h1>
+        <Auth
+          supabaseClient={supabase}
+          appearance={{ theme: ThemeSupa }}
+          theme="dark"
+          providers={["discord"]}
+        />
+      </div>
+    </div>
   );
-};
+}
 
 export default Login;
