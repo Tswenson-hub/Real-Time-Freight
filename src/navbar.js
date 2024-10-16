@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "./supabaseClient";
 
 const Navbar = ({ session }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Navbar session state:", session);
+    if (session && session.user) {
+      console.log("User ID:", session.user.id);
+      console.log("User email:", session.user.email);
+      console.log("Auth provider:", session.user.app_metadata.provider);
+    }
+  }, [session]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -47,9 +56,17 @@ const Navbar = ({ session }) => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Profile
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <button className="nav-link" onClick={handleLogout}>
                     Logout
                   </button>
+                </li>
+                <li className="nav-item">
+                  <span className="nav-link">Session Active</span>
                 </li>
               </>
             ) : (
@@ -58,6 +75,9 @@ const Navbar = ({ session }) => {
                   <Link className="nav-link" to="/login">
                     Login
                   </Link>
+                </li>
+                <li className="nav-item">
+                  <span className="nav-link">No Session</span>
                 </li>
               </>
             )}
