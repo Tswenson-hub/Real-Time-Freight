@@ -65,9 +65,6 @@ const Navbar = ({ session }) => {
                     Logout
                   </button>
                 </li>
-                <li className="nav-item">
-                  <span className="nav-link">Session Active</span>
-                </li>
               </>
             ) : (
               <>
@@ -75,9 +72,6 @@ const Navbar = ({ session }) => {
                   <Link className="nav-link" to="/login">
                     Login
                   </Link>
-                </li>
-                <li className="nav-item">
-                  <span className="nav-link">No Session</span>
                 </li>
               </>
             )}
