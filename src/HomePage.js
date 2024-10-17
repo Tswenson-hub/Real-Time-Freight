@@ -20,16 +20,9 @@ const HomePage = () => {
         <div className="product-device product-device-2 shadow-sm d-none d-md-block"></div>
       </div>
 
-      {/* Truck Animation */}
-      <div className="text-center my-5">
-        <div className="truck-container">
-          <div className="truck">
-            <div className="truck-body"></div>
-            <div className="truck-cabin"></div>
-            <div className="wheel"></div>
-            <div className="wheel wheel-back"></div>
-          </div>
-        </div>
+      {/* SVG Animation */}
+      <div className="svg-animation-container my-5">
+        <img src="semi-truck.png" alt="Animated PNG" className="animated-svg" />
       </div>
 
       {/* Features Section */}

@@ -1,79 +1,56 @@
-.truck-container {
-  width: 300px;
-  height: 150px;
-  margin: 0 auto;
-  position: relative;
+/* SVG Animation Styles */
+.svg-animation-container {
+  width: 100%;
   overflow: hidden;
+  position: relative;
+  height: 150px; /* Adjust this value based on your SVG's height */
 }
 
-.truck {
+.animated-svg {
   position: absolute;
-  bottom: 20px;
-  left: -300px;
+  left: -100%; /* Start off-screen to the left */
+  height: 100%;
+  animation: slide-right 10s linear infinite; /* Adjust duration as needed */
+}
+
+@keyframes slide-right {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Existing styles (unchanged) */
+.product-device {
+  position: absolute;
+  right: 10%;
+  bottom: -30%;
   width: 300px;
-  height: 130px;
-  animation: drive 8s linear infinite;
+  height: 540px;
+  background-color: #333;
+  border-radius: 21px;
+  transform: rotate(30deg);
 }
 
-.truck-body {
+.product-device::before {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 200px;
-  height: 110px;
-  background-color: #2c3e50;
-  border-radius: 10px 10px 0 0;
-}
-
-.truck-cabin {
-  position: absolute;
-  bottom: 0;
-  right: 200px;
-  width: 100px;
-  height: 90px;
-  background-color: #2c3e50;
-  border-radius: 10px 0 0 0;
-}
-
-.windshield {
-  position: absolute;
-  top: 10px;
+  top: 10%;
+  right: 10px;
+  bottom: 10%;
   left: 10px;
-  width: 60px;
-  height: 40px;
-  background-color: #ecf0f1;
+  content: "";
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 5px;
 }
 
-.wheel {
-  position: absolute;
-  bottom: -10px;
-  width: 40px;
-  height: 40px;
-  background-color: #34495e;
-  border-radius: 50%;
-  border: 5px solid #95a5a6;
+.product-device-2 {
+  top: -25%;
+  right: auto;
+  bottom: 0;
+  left: 5%;
+  background-color: #e5e5e5;
 }
 
-.wheel-front {
-  left: 30px;
-}
-
-.wheel-mid {
-  right: 100px;
-}
-
-.wheel-back {
-  right: 30px;
-}
-
-@keyframes drive {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(600px);
-  }
-}
-
-/* Rest of the CSS remains the same */
+/* You can keep any other existing styles that are still relevant */
