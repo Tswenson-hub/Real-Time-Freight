@@ -65,11 +65,6 @@ function Login() {
           view={authView}
           onSignUp={handleSignUp}
         />
-        <button onClick={toggleAuthView} className="toggle-auth-btn">
-          {authView === "sign_in"
-            ? "Need an account? Sign up"
-            : "Already have an account? Sign in"}
-        </button>
       </div>
     </div>
   );
