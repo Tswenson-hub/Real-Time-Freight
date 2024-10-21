@@ -70,7 +70,9 @@ const Profile = () => {
         <div className="card-body">
           <h5 className="card-title">Profile Statistics</h5>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">Hours Played: {profile.hours}</li>
+            <li className="list-group-item">
+              Remaining Hours: {profile.hours}
+            </li>
             <li className="list-group-item">
               Total Profit: ${profile.profit.toFixed(2)}
             </li>

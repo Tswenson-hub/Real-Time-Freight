@@ -86,7 +86,7 @@ const HomePage = () => {
                   Learn how to take part in the simulation. Learn how to work in
                   the industry.
                 </p>
-                <a href="#" className="btn btn-outline-light mt-3">
+                <a href="learn_to_play" className="btn btn-outline-light mt-3">
                   Learn More
                 </a>
               </div>

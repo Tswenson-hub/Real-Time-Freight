@@ -47,12 +47,12 @@ const Navbar = ({ session }) => {
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/live-load-board">
-                    Live Load Board
+                    Carriers
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/customer-prospects">
-                    Customer Prospects
+                    Customers
                   </Link>
                 </li>
                 <li className="nav-item">

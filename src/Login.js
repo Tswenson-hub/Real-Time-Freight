@@ -35,10 +35,6 @@ function Login() {
     };
   }, [navigate]);
 
-  const toggleAuthView = () => {
-    setAuthView(authView === "sign_in" ? "sign_up" : "sign_in");
-  };
-
   const handleSignUp = async (email, password) => {
     try {
       const { data, error } = await supabase.auth.signUp({
