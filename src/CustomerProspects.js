@@ -9,6 +9,7 @@ const CustomerProspects = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [prospectingError, setProspectingError] = useState(null);
   const [prospectingSuccess, setProspectingSuccess] = useState(false);
+  const [prospectingResult, setProspectingResult] = useState(null);
 
   useEffect(() => {
     fetchProspects();
@@ -32,9 +33,11 @@ const CustomerProspects = () => {
   }, []);
 
   const fetchProspects = async () => {
+    // Modified to only fetch prospects that aren't committed to any profile
     const { data, error } = await supabase
       .from("customer_prospects")
       .select("*")
+      .is("profile_id", null)
       .order("id", { ascending: true });
 
     if (error) {
@@ -73,6 +76,12 @@ const CustomerProspects = () => {
     setSelectedProspect(null);
     setProspectingError(null);
     setProspectingSuccess(false);
+    setProspectingResult(null);
+  };
+
+  const calculateProspectingSuccess = (successProbability) => {
+    const randomNumber = Math.floor(Math.random() * 10) / 10;
+    return randomNumber <= successProbability;
   };
 
   const handleProspect = async () => {
@@ -81,26 +90,53 @@ const CustomerProspects = () => {
       return;
     }
 
-    const { error } = await supabase.rpc("deduct_prospecting_hours", {
-      user_id: userProfile.id,
-      hours_to_deduct: 5,
-    });
+    try {
+      const { error: hoursError } = await supabase.rpc(
+        "deduct_prospecting_hours",
+        {
+          user_id: userProfile.id,
+          hours_to_deduct: 5,
+        }
+      );
 
-    if (error) {
+      if (hoursError) throw hoursError;
+
+      const isSuccessful = calculateProspectingSuccess(
+        userProfile.success_probability
+      );
+
+      if (isSuccessful) {
+        const { error: updateError } = await supabase
+          .from("customer_prospects")
+          .update({ profile_id: userProfile.id })
+          .eq("id", selectedProspect.id);
+
+        if (updateError) throw updateError;
+
+        setProspectingSuccess(true);
+        setProspectingResult(
+          "Congratulations! Your prospecting efforts were successful!"
+        );
+      } else {
+        setProspectingSuccess(false);
+        setProspectingResult(
+          "Despite your efforts, you weren't able to secure this prospect. Try again with another customer!"
+        );
+      }
+
+      setUserProfile({ ...userProfile, hours: userProfile.hours - 5 });
+      fetchProspects();
+    } catch (error) {
       console.error("Error during prospecting:", error);
       setProspectingError(
         "An error occurred during prospecting. Please try again."
       );
-    } else {
-      setUserProfile({ ...userProfile, hours: userProfile.hours - 5 });
-      setProspectingSuccess(true);
-      // Here you could add logic to update the prospect's status or add a note
     }
   };
 
   return (
     <div className="container mt-4">
-      <h2>Customer Prospects</h2>
+      <h2>Available Customer Prospects</h2>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -156,12 +192,13 @@ const CustomerProspects = () => {
               </p>
               <hr />
               <p>Available Hours: {userProfile?.hours || 0}</p>
+              <p>Success Probability: {userProfile?.success_probability}/10</p>
               {prospectingError && (
                 <Alert variant="danger">{prospectingError}</Alert>
               )}
-              {prospectingSuccess && (
-                <Alert variant="success">
-                  Prospecting successful! 5 hours deducted.
+              {prospectingResult && (
+                <Alert variant={prospectingSuccess ? "success" : "warning"}>
+                  {prospectingResult}
                 </Alert>
               )}
               <Button
